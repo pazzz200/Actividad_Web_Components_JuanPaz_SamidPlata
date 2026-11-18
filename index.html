@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agenda cultural - Web Components</title>
+
+  <!-- El script se carga en el <head> con defer: se descarga en paralelo
+       y se ejecuta cuando el HTML ya esta leido (el <template> ya existe). -->
+  <script src="js/main.js" defer></script>
+
+  <!-- Estilos solo de la pagina (fuera del componente) -->
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: #f4f1ec;
+      color: #2b2b2b;
+    }
+
+    header {
+      text-align: center;
+      padding: 48px 16px 24px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+      letter-spacing: -0.5px;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      color: #6b6b6b;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px 16px 48px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 16px;
+      font-size: 0.85rem;
+      color: #8a8a8a;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Agenda cultural</h1>
+    <p>Eventos de la semana - componente nativo &lt;tarjeta-evento&gt;</p>
+  </header>
+
+  <!-- R1 - Template propio: <template> con su <style> y marcadores vacios
+       (los elementos con data-campo) que JavaScript rellena con los atributos.
+       El contenido de un <template> no se muestra ni se ejecuta hasta que se clona. -->
+  <template id="plantilla-evento">
+    <style>
+      /* Estos estilos viven dentro del Shadow DOM: no afectan a la pagina
+         y los estilos de la pagina no los rompen. */
+      :host {
+        display: block;
+      }
+
+      .tarjeta {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background: #ffffff;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .tarjeta:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+      }
+
+      .franja {
+        height: 6px;
+        background: linear-gradient(90deg, #b5543c, #e0a458);
+      }
+
+      .contenido {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding: 20px 22px 22px;
+      }
+
+      .etiqueta {
+        align-self: flex-start;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #b5543c;
+        background: #fbeee8;
+        padding: 4px 10px;
+        border-radius: 999px;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 1.3rem;
+        line-height: 1.3;
+        color: #1f1f1f;
+      }
+
+      .datos {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 6px;
+        font-size: 0.95rem;
+        color: #4a4a4a;
+      }
+
+      .datos strong {
+        display: inline-block;
+        min-width: 56px;
+        color: #8a8a8a;
+        font-weight: 600;
+      }
+
+      .descripcion {
+        flex: 1;
+        margin: 0;
+        padding-top: 14px;
+        border-top: 1px solid #eee;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: #555;
+      }
+
+      .cupos {
+        align-self: flex-start;
+        font-weight: 700;
+        font-size: 0.9rem;
+        padding: 6px 12px;
+        border-radius: 8px;
+        background: #e8f4ec;
+        color: #2f7d4f;
+      }
+    </style>
+
+    <article class="tarjeta">
+      <div class="franja"></div>
+      <div class="contenido">
+        <span class="etiqueta">Evento cultural</span>
+
+        <!-- Marcadores vacios: JavaScript escribe aqui el valor de cada atributo -->
+        <h2 data-campo="titulo"></h2>
+
+        <ul class="datos">
+          <li><strong>Fecha</strong> <span data-campo="fecha"></span></li>
+          <li><strong>Lugar</strong> <span data-campo="lugar"></span></li>
+        </ul>
+
+        <!-- R4 - Slot: aqui se muestra la descripcion libre que se escribe
+             entre las etiquetas <tarjeta-evento> ... </tarjeta-evento> -->
+        <div class="descripcion">
+          <slot>Sin descripcion por el momento.</slot>
+        </div>
+
+        <span class="cupos">Cupos disponibles: <span data-campo="cupos"></span></span>
+      </div>
+    </article>
+  </template>
+
+  <!-- R5 - Reutilizacion: tres instancias del mismo componente con datos distintos.
+       R3 - Atributos: cada tarjeta recibe titulo, fecha, lugar y cupos. -->
+  <main>
+    <tarjeta-evento
+      titulo="Concierto de jazz al aire libre"
+      fecha="22 de noviembre de 2026 - 6:00 p. m."
+      lugar="Parque de los Novios"
+      cupos="120">
+      <p>Una tarde con cuartetos locales interpretando clasicos del jazz y composiciones propias. Lleva tu manta.</p>
+    </tarjeta-evento>
+
+    <tarjeta-evento
+      titulo="Taller de ceramica para principiantes"
+      fecha="25 de noviembre de 2026 - 3:00 p. m."
+      lugar="Casa de la Cultura"
+      cupos="15">
+      <p>Aprende a modelar tu primera pieza en arcilla. Los materiales estan incluidos.</p>
+    </tarjeta-evento>
+
+    <tarjeta-evento
+      titulo="Noche de cine latinoamericano"
+      fecha="29 de noviembre de 2026 - 7:30 p. m."
+      lugar="Teatro Municipal"
+      cupos="80">
+      <p>Proyeccion de tres cortometrajes y conversatorio con sus directoras al final de la funcion.</p>
+    </tarjeta-evento>
+  </main>
+
+  <footer>
+    Actividad Web Components - Paz y Samid
+  </footer>
+
+</body>
+</html>
