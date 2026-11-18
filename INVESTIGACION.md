@@ -52,7 +52,7 @@ Pensemoslo como cocinar en casa:
 ### 2. Tabla comparativa *(Paz: Web Components y React - Samid: Vue y Angular)*
 
 | Criterio | Web Components nativos | React | Vue | Angular |
-
+|---|---|---|---|---|
 | **Tipo** | Estandar del navegador: ya viene incluido. | Libreria para hacer interfaces, creada por Meta. | Framework "progresivo": puedes usar poquito o usarlo completo. | Framework completo, creado por Google. |
 | **Como se crea un componente** | Con una clase que extiende `HTMLElement` y se registra con `customElements.define()`. | Con una funcion que devuelve JSX, que es como HTML escrito dentro de JavaScript. | Con un archivo `.vue` que junta el HTML, el JS y el CSS del componente. | Con una clase en TypeScript marcada con `@Component`, que se conecta a su HTML y su CSS. |
 | **¿Necesita npm?** | No. Con un HTML y un JS abiertos en el navegador es suficiente. | En la practica si, porque el JSX hay que convertirlo con herramientas como Vite. | Se puede usar desde un enlace (CDN), pero en proyectos reales se usa npm. | Si. Necesitas Node.js, npm y Angular CLI para crear el proyecto. |
@@ -85,3 +85,6 @@ Angular ya trae casi todo lo que se necesita (rutas, formularios, validaciones, 
 - web.dev - Custom Elements v1: https://web.dev/articles/custom-elements-v1 (consultado el 17/11/2026)
 - Can I use - Custom Elements: https://caniuse.com/custom-elementsv1 (consultado el 17/11/2026)
 - Node.js - Introduction to Node.js: https://nodejs.org/en/learn/getting-started/introduction-to-nodejs (consultado el 17/11/2026)
+- npm Docs - About npm: https://docs.npmjs.com/about-npm (consultado el 18/11/2026)
+- Vue.js - Introduction: https://vuejs.org/guide/introduction.html (consultado el 18/11/2026)
+- Angular - What is Angular?: https://angular.dev/overview (consultado el 18/11/2026)
